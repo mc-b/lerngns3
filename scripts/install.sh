@@ -31,6 +31,9 @@ curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/gns3-microk
 # LernMAAS Template 
 # curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-templates | bash -
 
+# MAAS.io Template 
+curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-maas | bash -
+
 # Digicomp Kurse Templates
 cd
 sudo snap install terraform --classic
