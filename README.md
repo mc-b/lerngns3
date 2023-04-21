@@ -40,14 +40,11 @@ Bei Hyper-V sind folgende Schritte, in der PowerShell als Administrator, notwend
     Set-VMProcessor -VMName gns3-60-default -ExposeVirtualizationExtensions $true
     multipass start gns3-60-default
     
+Einschränkungen
+---------------
 
-Zugriff auf GNS3 VMs
---------------------
+Hyper-V stellt keinen DHCP Server zur Verfügung. Deshalb bekommt die OpenWrt Router keine IP-Adresse zugewiesen. 
 
-Die GNS3 VMs werden im Netzwerk 192.168.122.0/24 erstellt.
+Das hat zur Folge, dass hinterliegenden VMs keine Verbindung zum Internet aufbauen können.
 
-Die Beispielprojekte [projects]
-
-
-
-
+Abhilfe: NAT Gateway statt OpenWrt Router verwenden.
