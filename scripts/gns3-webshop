@@ -80,3 +80,61 @@ EOF
         
     done             
 done
+
+### 
+# Reverse Proxy
+
+export MODUL=reverseproxy
+
+echo -e "instance-id: ${MODUL}\nlocal-hostname: ${MODUL}" > meta-data
+curl https://raw.githubusercontent.com/mc-b/gns3/main/scripts/cloud-init-${MODUL}.yaml >user-data
+
+sudo mkisofs -output "/opt/gns3/images/QEMU/webshop-${MODUL}.iso" -volid cidata -joliet -rock {user-data,meta-data}
+sudo rm -f "/opt/gns3/images/QEMU/webshop-${MODUL}.iso.md5sum"
+    
+cat <<EOF >template
+{
+    "cdrom_image": "webshop-${MODUL}.iso",
+    "compute_id": "local",
+    "default_name_format": "{name}",
+    "console_type": "telnet",
+    "cpus": 1,
+    "ram": 512,
+    "symbol": ":/symbols/affinity/circle/blue/vm.svg",    
+    "hda_disk_image": "jammy-server-cloudimg-amd64.img",
+    "name": "webshop-${MODUL}",
+    "qemu_path": "/bin/qemu-system-x86_64",
+    "template_type": "qemu",
+    "usage": "Webshop ${MODUL}"
+}
+EOF
+curl -X POST "http://localhost:3080/v2/templates" -d "@template"
+
+### 
+# Load Balancer
+
+export MODUL=loadbalancer
+
+echo -e "instance-id: ${MODUL}\nlocal-hostname: ${MODUL}" > meta-data
+curl https://raw.githubusercontent.com/mc-b/gns3/main/scripts/cloud-init-${MODUL}.yaml >user-data
+
+sudo mkisofs -output "/opt/gns3/images/QEMU/webshop-${MODUL}.iso" -volid cidata -joliet -rock {user-data,meta-data}
+sudo rm -f "/opt/gns3/images/QEMU/webshop-${MODUL}.iso.md5sum"
+    
+cat <<EOF >template
+{
+    "cdrom_image": "webshop-${MODUL}.iso",
+    "compute_id": "local",
+    "default_name_format": "{name}",
+    "console_type": "telnet",
+    "cpus": 1,
+    "ram": 512,
+    "symbol": ":/symbols/affinity/circle/blue/vm.svg",    
+    "hda_disk_image": "jammy-server-cloudimg-amd64.img",
+    "name": "webshop-${MODUL}",
+    "qemu_path": "/bin/qemu-system-x86_64",
+    "template_type": "qemu",
+    "usage": "Webshop ${MODUL}"
+}
+EOF
+curl -X POST "http://localhost:3080/v2/templates" -d "@template"

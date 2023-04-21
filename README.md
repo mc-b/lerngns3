@@ -29,7 +29,7 @@ Nach der Installation sollte überprüft werden, ob die Virtualisierung aktivier
 
     sudo virt-host-validate qemu
     
-Wenn der erste Eintrag `FAIL` anzeigt ist die KVM Unterstützung zu deaktivieren. Dazu die Konfigurationsdatei `/opt/gns3/.config/GNS3/2.2/gns3_server.conf` um folgenden Eintrag ergänzen:
+Wenn der erste Eintrag `FAIL` anzeigt ist *Nested Virtualization* zu aktivieren oder die KVM Unterstützung zu deaktivieren. Dazu die Konfigurationsdatei `/opt/gns3/.config/GNS3/2.2/gns3_server.conf` um folgenden Eintrag ergänzen:
 
     [Qemu]
     enable_kvm = false
