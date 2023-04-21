@@ -1,0 +1,17 @@
+#cloud-config
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    home: /home/ubuntu
+    shell: /bin/bash
+    lock_passwd: false
+    plain_text_passwd: 'insecure' 
+ssh_pwauth: true
+disable_root: false   
+runcmd:
+  - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/nfsshare.sh | bash -  
+  - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/vpn.sh | bash -
+  - sudo su - ubuntu -c "curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/minm.sh | bash -"
+
+  
