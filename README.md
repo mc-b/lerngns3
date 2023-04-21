@@ -59,3 +59,14 @@ Ein Teil der Infrastrukturen (Hyper-V, AWS), erlaubt es nicht das der OpenWrt Ro
 Das hat zur Folge, dass hinterliegenden VMs keine Verbindung zum Internet aufbauen können.
 
 Abhilfe: NAT Gateway statt Cloud und OpenWrt Router verwenden.
+
+Links
+-----
+
+* [Multipass Bridge Network](https://multipass.run/docs/create-an-instance#heading--bridging)
+* [Bridged networking on Ubuntu Server with systemd-networkd instead network-manager?](https://discourse.ubuntu.com/t/bridged-networking-on-ubuntu-server-with-systemd-networkd-instead-network-manager/30235)
+* [Ubuntu 22.04 bridging with netplan doesn't work](https://askubuntu.com/questions/1416713/ubuntu-22-04-bridging-with-netplan-doesnt-work)
+* [How to install GNS3-Server on Ubuntu 20.04](https://securitynetworkinglinux.wordpress.com/2021/01/13/how-to-install-gns3-server-on-ubuntu-20-04/)
+* [Install GNS3 on a remote server](https://docs.gns3.com/docs/getting-started/installation/remote-server/)
+* [Settings profiles](https://docs.gns3.com/docs/using-gns3/advanced/settings-profiles/)
+* [GNS3 Server Doku](https://gns3-server.readthedocs.io/en/stable/index.html)
