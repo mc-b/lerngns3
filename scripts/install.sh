@@ -23,6 +23,19 @@ curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/gns3-microk
 sudo wget -O /opt/gns3/images/QEMU/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz https://downloads.openwrt.org/releases/22.03.0/targets/x86/64/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz
 sudo gunzip /opt/gns3/images/QEMU/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz
 
+# Digicomp Kurse
+cd
+sudo snap install terraform --classic
+for MODUL in duk cdi virtar modtec mlg
+do
+    git clone https://github.com/mc-b/${MODUL}   
+    cd ${MODUL}
+    sed -i -e 's/multipass/gns3/g' main.tf
+    terraform init 
+    terraform apply --auto-approve
+    cd ..
+done
+
 # Netzwerk Bridge damit das Netzwerk schneller mit GNS3 funktioniert
 sudo apt-get install -y bridge-utils net-tools
 export ETH=$(ip link | awk -F: '$0 !~ "lo|vir|wl|tap|br|wg|docker0|^[^0-9]"{print $2;getline}')

@@ -18,7 +18,7 @@ module "master" {
 
   cores   = 4
   memory  = 16
-  storage = 32
+  storage = 64
   # SSH, GNS3 Web UI
   ports      = [ 22, 3080 ]
 

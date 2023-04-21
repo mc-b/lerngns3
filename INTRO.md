@@ -6,7 +6,7 @@ Graphical Network Simulator-3 ist ein Netzwerk-Software-Emulator, der erstmals 2
 Services
 --------
 
-* https://${fqdn}:3080 - GNS3 Web UI
+* http://${fqdn}:3080 - GNS3 Web UI
 
 Client
 ------
