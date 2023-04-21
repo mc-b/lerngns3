@@ -1,0 +1,71 @@
+#cloud-config
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    home: /home/ubuntu
+    shell: /bin/bash
+    lock_passwd: false
+    plain_text_passwd: 'insecure' 
+ssh_pwauth: true
+disable_root: false   
+packages:
+  - nginx
+write_files:
+ - content: |
+      <html>
+       <body>
+        <h1>My WebShop (Load Balancer)</h1>
+         <ul>
+         <li><a href="/order">Order</a></li>
+         <li><a href="/customer">Customer</a></li>
+         <li><a href="/catalog">Catalog</a></li>
+         </ul>
+       </body>
+      </html>
+   path: /var/www/html/index.html
+   permissions: '0644' 
+ - content: |
+        ##
+        # Load Balancer configuration
+        #
+        # Server Gruppen
+        upstream customer {
+                server customer-01;
+                server customer-02;
+                server customer-03;
+        }  
+        upstream order {
+                server order-01;
+                server order-02;
+                server order-03;
+        }    
+        upstream catalog {
+                server catalog-01;
+                server catalog-02;
+                server catalog-03;
+        }                          
+        server {
+                listen 80 default_server;
+                listen [::]:80 default_server;
+                root /var/www/html;
+                index index.html;
+                server_name _;
+        
+                location / {
+                        try_files $uri $uri/ =404;
+                }
+                location /customer {
+                        proxy_pass      http://customer/;
+                }
+                location /order {
+                        proxy_pass      http://order/;
+                }
+                location /catalog {
+                        proxy_pass      http://catalog/;
+                }
+        }
+   path: /etc/nginx/sites-available/default
+   permissions: '0644'
+runcmd:
+  - sudo systemctl restart nginx 
