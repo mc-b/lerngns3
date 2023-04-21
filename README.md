@@ -43,7 +43,7 @@ Bei Hyper-V sind folgende Schritte, in der PowerShell als Administrator, notwend
 Einschränkungen
 ---------------
 
-Hyper-V stellt keinen DHCP Server zur Verfügung. Deshalb bekommt die OpenWrt Router keine IP-Adresse zugewiesen. 
+Hyper-V stellt keinen DHCP Server zur Verfügung. Deshalb bekommt der OpenWrt Router keine IP-Adresse zugewiesen. 
 
 Das hat zur Folge, dass hinterliegenden VMs keine Verbindung zum Internet aufbauen können.
 
