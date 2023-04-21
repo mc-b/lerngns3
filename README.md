@@ -45,6 +45,8 @@ Bei Hyper-V sind folgende Schritte, in der PowerShell als Administrator, notwend
 * Nested Virtualization aktivieren
 * VM starten und ggf. IP-Adresse überprüfen.
 
+Die Befehle sind wie folgt: 
+
     multipass stop gns3-60-default
     Set-VMProcessor -VMName gns3-60-default -ExposeVirtualizationExtensions $true
     multipass start gns3-60-default
