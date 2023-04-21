@@ -25,6 +25,15 @@ Terraform verwendet [Multipass](https://multipass.run/) um die VM zu erstellen.
 
 Nach erfolgreicher Installation werden weitere Informationen für den Zugriff auf die VMs angezeigt.
 
+Nach der Installation sollte überprüft werden, ob die Virtualisierung aktiviert ist:    
+
+    sudo virt-host-validate qemu
+    
+Wenn der erste Eintrag `FAIL` anzeigt ist die KVM Unterstützung zu deaktivieren. Dazu die Konfigurationsdatei `/opt/gns3/.config/GNS3/2.2/gns3_server.conf` um folgenden Eintrag ergänzen:
+
+    [Qemu]
+    enable_kvm = false
+
 
 Nested Virtualization
 ---------------------
@@ -47,4 +56,4 @@ Hyper-V stellt keinen DHCP Server zur Verfügung. Deshalb bekommt der OpenWrt Ro
 
 Das hat zur Folge, dass hinterliegenden VMs keine Verbindung zum Internet aufbauen können.
 
-Abhilfe: NAT Gateway statt OpenWrt Router verwenden.
+Abhilfe: NAT Gateway statt Cloud und OpenWrt Router verwenden.
