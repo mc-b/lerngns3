@@ -54,7 +54,7 @@ Die Befehle sind wie folgt:
 Einschränkungen
 ---------------
 
-Hyper-V stellt keinen DHCP Server zur Verfügung. Deshalb bekommt der OpenWrt Router keine IP-Adresse zugewiesen. 
+Ein Teil der Infrastrukturen (Hyper-V, AWS), erlaubt es nicht das der OpenWrt Router eine IP-Adresse bezieht.
 
 Das hat zur Folge, dass hinterliegenden VMs keine Verbindung zum Internet aufbauen können.
 
