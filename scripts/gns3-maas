@@ -21,7 +21,7 @@ cat <<EOF >template
     "default_name_format": "{name}",
     "console_type": "telnet",
     "cpus": 2,
-    "ram": 6144,
+    "ram": 5120,
     "symbol": ":/symbols/affinity/circle/red/server_cluster.svg",    
     "hda_disk_image": "jammy-server-cloudimg-amd64.img",
     "name": "maas-${MODUL}",

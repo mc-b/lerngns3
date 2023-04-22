@@ -28,8 +28,8 @@ curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/gns3-websho
 # Kubernetes Templates
 curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/gns3-microk8s | bash -
 
-# LernMAAS Template 
-# curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-templates | bash -
+# LernMAAS Template (Services)
+curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-templates | bash -
 
 # MAAS.io Template 
 curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-maas | bash -
