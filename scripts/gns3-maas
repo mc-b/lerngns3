@@ -31,3 +31,26 @@ cat <<EOF >template
 }
 EOF
 curl -X POST "http://localhost:3080/v2/templates" -d "@template"
+
+###
+# Scratch Server (leere Maschine wo zuerst mittels Netzwerk installiert werden muss)
+ 
+sudo qemu-img create -f qcow2 /opt/gns3/images/QEMU/scratch.qcow2 20G
+
+cat <<EOF >template
+{
+    "boot_priority": "nc",
+    "compute_id": "local",
+    "console_type": "vnc",
+    "cpus": 1,
+    "default_name_format": "{name}-{0}",
+    "hda_disk_image": "scratch.qcow2",
+    "name": "maas-server",
+    "qemu_path": "/usr/bin/qemu-system-x86_64",
+    "ram": 2048,
+    "symbol": ":/symbols/affinity/circle/red/server.svg",
+    "template_type": "qemu",
+    "usage": "Scratch Server (leere Maschine wo zuerst mittels Netzwerk installiert werden muss)"
+}
+EOF
+curl -X POST "http://localhost:3080/v2/templates" -d "@template"    
