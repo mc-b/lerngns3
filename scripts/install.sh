@@ -32,7 +32,7 @@ curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/gns3-microk
 curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-templates | bash -
 
 # MAAS.io Template 
-curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-maas | bash -
+curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/gns3-maas | bash -
 
 # Digicomp Kurse Templates
 cd
