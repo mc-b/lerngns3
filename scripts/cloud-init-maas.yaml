@@ -21,10 +21,9 @@ write_files:
    path: /etc/netplan/50-cloud-init.yaml
    permissions: '0644' 
 runcmd:
-  - netplan generate
-  - netplan apply   
   - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/nfsshare.sh | bash -  
   - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/vpn.sh | bash -
   - sudo su - ubuntu -c "curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/master/scripts/maas.sh | bash -"
-
+  - netplan generate
+  - netplan apply   
   
