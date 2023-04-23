@@ -33,7 +33,8 @@ Wenn der erste Eintrag `FAIL` anzeigt ist *Nested Virtualization* zu aktivieren 
 
     [Qemu]
     enable_kvm = false
-
+    
+Als nächstes eines der vorbereiteten [Projekte](projects/) importieren -> File -> Import portable project".    
 
 Nested Virtualization
 ---------------------
