@@ -1,12 +1,8 @@
 #cloud-config
-users:
-  - name: ubuntu
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    groups: users, admin
-    home: /home/ubuntu
-    shell: /bin/bash
-    lock_passwd: false
-    plain_text_passwd: 'insecure' 
+password: insecure
+chpasswd: { expire: False }
+ssh_pwauth: true
+disable_root: false   
 write_files:
  - content: |
     network:
@@ -24,8 +20,6 @@ write_files:
         version: 2
    path: /etc/netplan/50-cloud-init.yaml
    permissions: '0644' 
-ssh_pwauth: true
-disable_root: false   
 runcmd:
   - netplan generate
   - netplan apply   
