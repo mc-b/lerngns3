@@ -1,17 +1,20 @@
 #cloud-config
 network:
   version: 2
-  config:
-    - type: physical
-      name: ens3
-      subnets:
-        - type: static
-          address: 192.168.123.8/24
-          gateway: 192.168.123.1
-    - type: nameserver
-      address:
-        - 208.67.222.222 
-        - 208.67.220.22
+  ethernets:  
+    id0:
+      match:
+        macaddress: '0c:f1:ca:21:00:00'
+      wakeonlan: true
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - 192.168.123.8/24
+      gateway4: 192.168.123.1  
+      nameservers:
+        search: 
+          - 208.67.222.222 
+          - 208.67.220.22
 users:
   - name: ubuntu
     sudo: ALL=(ALL) NOPASSWD:ALL
