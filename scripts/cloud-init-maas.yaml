@@ -3,27 +3,8 @@ password: insecure
 chpasswd: { expire: False }
 ssh_pwauth: true
 disable_root: false   
-write_files:
- - content: |
-    network:
-        ethernets:
-            ens3:
-                addresses:
-                - 192.168.123.8/24
-                dhcp4: false
-                dhcp6: false
-                gateway4: 192.168.123.1
-                nameservers:
-                    search:
-                    - 208.67.222.222
-                    - 208.67.220.22
-        version: 2
-   path: /etc/netplan/50-cloud-init.yaml
-   permissions: '0644' 
 runcmd:
   - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/nfsshare.sh | bash -  
   - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/vpn.sh | bash -
   - sudo su - ubuntu -c "curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/master/scripts/maas.sh | bash -"
-  - netplan generate
-  - netplan apply   
   
