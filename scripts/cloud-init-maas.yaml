@@ -27,7 +27,7 @@ network:
 ssh_pwauth: true
 disable_root: false   
 runcmd:
-  - sudo su - ubuntu -c "curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/maas-network.sh | bash -"  
+  - curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/maas-network.sh | bash -  
   - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/nfsshare.sh | bash -  
   - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/vpn.sh | bash -
   - sudo su - ubuntu -c "curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/master/scripts/maas.sh | bash -"
