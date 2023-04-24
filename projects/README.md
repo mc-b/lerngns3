@@ -41,19 +41,7 @@ Port (Range) forward
 
 Geht am einfachsten mittels nginx. 
 
-Einzelner Port, hier MAAS.io und OpenWrt, weiterleiten.
-
-    cat <<EOF | sudo tee /etc/nginx/sites-enabled/maas
-    server {
-        listen 5240 default_server;
-        location / {
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade \$http_upgrade;
-            proxy_set_header Connection "Upgrade";          
-            proxy_pass http://192.168.123.8:5240/;
-        }
-    }
-    EOF
+Einzelner Port für den OpenWrt Router weiterleiten:
     
     cat <<EOF | sudo tee /etc/nginx/sites-enabled/openwrt
     server {
@@ -119,10 +107,11 @@ IP-Adresse für DNS-Namen ausgeben:
 
     host dukmaster-10-default 10.0.46.249
     
-`10.0.46.249` ist die IP-Adresse des Routers.    
+`10.0.46.249` ist die IP-Adresse des Routers und entsprechend anzupassen.  
 
 ### Links    
 
 * [Nginx LB Doku](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/)
+* [Nginx proxy-pass Doku](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass)
 * [What Is Nginx Load Balancing?](https://cloudinfrastructureservices.co.uk/nginx-load-balancing/)
 * [Nginx Proxy a large port range to equivalent port on a different ip address](https://serverfault.com/questions/279262/nginx-proxy-a-large-port-range-to-equivalent-port-on-a-different-ip-address)
