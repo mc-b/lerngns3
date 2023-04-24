@@ -36,6 +36,8 @@ Um das Routing zu vereinfachen hat der Router immer die gleiche MAC Adresse: "0c
 
 Die IP-Adresse `192.168.1.31` (Windows) `10.0.46.249` (Linux) ist durch die IP des Router zu ersetzen.
 
+**ACHTUNG**: auf Linux wird die Route automatisch entfernt, wenn der Router (GNS3 Projekt) nicht mehr läuft
+
 Port (Range) forward
 --------------------
 
