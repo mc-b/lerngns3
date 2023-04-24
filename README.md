@@ -11,7 +11,8 @@ Das Projekt stellt die die Umgebungen von [LernMAAS](https://github.com/mc-b/ler
 
 Dieses Projekt basiert auf den Erfahrungen von [LernKube](https://github.com/mc-b/lernkube), [LernMAAS](https://github.com/mc-b/lernmaas) und [LernCloud](https://github.com/mc-b/lerncloud).
 
-### Quick Start
+Quick Start
+-----------
 
 Installiert [Git/Bash](https://git-scm.com/downloads), [Multipass](https://multipass.run/) und [Terraform](https://www.terraform.io/).
 
@@ -39,6 +40,11 @@ Wenn der erste Eintrag `FAIL` anzeigt ist *Nested Virtualization* zu aktivieren 
     enable_kvm = false
     
 Als nächstes eines der vorbereiteten [Projekte](projects/) importieren -> File -> Import portable project".    
+
+Templates in bestehende GNS3 Umgebung integrieren
+-------------------------------------------------
+
+Ab Zeile 15 (Ubuntu Image hole) des Installationsscripts [install.sh](scripts/install.sh) bis max. Zeile 52 (ohne Netzwerk) manuell ausführen.
 
 Nested Virtualization
 ---------------------
