@@ -15,12 +15,6 @@ then
     sudo rm -f "/opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img.md5sum"
 fi
 
-###
-# NGinx statt Apache Webserver
-
-sudo apt-get purge -y apache2
-sudo apt-get install -y nginx
-
 ### 
 # Cloud-init ISO Images und Templates erzeugen
 

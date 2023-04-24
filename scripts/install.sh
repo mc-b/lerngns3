@@ -8,6 +8,10 @@ curl https://raw.githubusercontent.com/GNS3/gns3-server/master/scripts/remote-in
 sudo bash gns3-remote-install.sh
 sudo usermod -aG gns3 ubuntu
 
+###
+# NGinx als Port Forwarder etc.
+sudo apt-get install -y nginx
+
 # Ubuntu Cloud-Image holen und aufbereiten 
 sudo apt-get install -y genisoimage unzip
 sudo wget -O /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
@@ -23,16 +27,16 @@ curl -X POST "http://localhost:3080/v2/templates" -d '{ "category": "guest", "co
 curl -X POST "http://localhost:3080/v2/templates" -d '{ "category": "guest", "compute_id": "local", "console_type": "vnc", "image": "jess/chromium", "name": "chromium", "symbol": ":/symbols/affinity/circle/gray/client.svg", "template_type": "docker" }'
 
 # WebShop Templates
-curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/gns3-webshop | bash -
+curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-webshop.sh | bash -
 
 # Kubernetes Templates
-curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/gns3-microk8s | bash -
+curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-microk8s.sh | bash -
 
 # LernMAAS Template (Services)
-curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-templates | bash -
+curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-templates.sh | bash -
 
 # MAAS.io Template 
-curl -sfL https://raw.githubusercontent.com/mc-b/gns3/master/scripts/gns3-maas | bash -
+curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-maas.sh | bash -
 
 # Digicomp Kurse Templates
 cd

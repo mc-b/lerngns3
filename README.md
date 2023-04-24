@@ -1,11 +1,15 @@
-GNS3 Umgebung
-=============
+Lern GNS3 
+=========
 
 ![](images/gns3.png)
 
 - - - 
 
 Graphical Network Simulator-3 ist ein Netzwerk-Software-Emulator, der erstmals 2008 veröffentlicht wurde. Er ermöglicht die Kombination von virtuellen und realen Geräten, die zur Simulation komplexer Netzwerke verwendet werden.
+
+Das Projekt stellt die die Umgebungen von [LernMAAS](https://github.com/mc-b/lernmaas) und weitere, als Templates und [Projekte](projects/), in einer GNS3 Umgebung zur Verfügung.
+
+Dieses Projekt basiert auf den Erfahrungen von [LernKube](https://github.com/mc-b/lernkube), [LernMAAS](https://github.com/mc-b/lernmaas) und [LernCloud](https://github.com/mc-b/lerncloud).
 
 ### Quick Start
 
@@ -71,3 +75,4 @@ Links
 * [Install GNS3 on a remote server](https://docs.gns3.com/docs/getting-started/installation/remote-server/)
 * [Settings profiles](https://docs.gns3.com/docs/using-gns3/advanced/settings-profiles/)
 * [GNS3 Server Doku](https://gns3-server.readthedocs.io/en/stable/index.html)
+* [TianoCore Bios](https://www.tianocore.org/)
