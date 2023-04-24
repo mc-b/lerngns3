@@ -81,7 +81,7 @@ done
 export MODUL=reverseproxy
 
 echo -e "instance-id: ${MODUL}\nlocal-hostname: ${MODUL}" > meta-data
-curl https://raw.githubusercontent.com/mc-b/gns3/main/scripts/cloud-init-${MODUL}.yaml >user-data
+curl https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/cloud-init-${MODUL}.yaml >user-data
 
 sudo mkisofs -output "/opt/gns3/images/QEMU/webshop-${MODUL}.iso" -volid cidata -joliet -rock {user-data,meta-data}
 sudo rm -f "/opt/gns3/images/QEMU/webshop-${MODUL}.iso.md5sum"
@@ -110,7 +110,7 @@ curl -X POST "http://localhost:3080/v2/templates" -d "@template"
 export MODUL=loadbalancer
 
 echo -e "instance-id: ${MODUL}\nlocal-hostname: ${MODUL}" > meta-data
-curl https://raw.githubusercontent.com/mc-b/gns3/main/scripts/cloud-init-${MODUL}.yaml >user-data
+curl https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/cloud-init-${MODUL}.yaml >user-data
 
 sudo mkisofs -output "/opt/gns3/images/QEMU/webshop-${MODUL}.iso" -volid cidata -joliet -rock {user-data,meta-data}
 sudo rm -f "/opt/gns3/images/QEMU/webshop-${MODUL}.iso.md5sum"

@@ -9,7 +9,7 @@
 export MODUL=rackserver
 
 echo -e "instance-id: ${MODUL}\nlocal-hostname: ${MODUL}" > meta-data
-curl https://raw.githubusercontent.com/mc-b/gns3/main/scripts/cloud-init-maas.yaml >user-data
+curl https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/cloud-init-maas.yaml >user-data
 
 sudo mkisofs -output "/opt/gns3/images/QEMU/maas-${MODUL}.iso" -volid cidata -joliet -rock {user-data,meta-data}
 sudo rm -f "/opt/gns3/images/QEMU/maas-${MODUL}.iso.md5sum"
