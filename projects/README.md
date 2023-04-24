@@ -41,7 +41,9 @@ Die IP-Adresse `192.168.1.31` (Windows) `10.0.46.249` (Linux) ist durch die IP d
 Port (Range) forward
 --------------------
 
-Geht am einfachsten mittels nginx. 
+Port forwards werden nur benötigt, wenn sich der GNS3 Server in einen separaten Netzwerk via VPN (WireGuard) befindet.
+
+Die Umsetzung geht am einfachsten mittels nginx. Dazu ist die nginx Konfiguration zu erweitern.
 
 Einzelner Port für den OpenWrt Router weiterleiten:
     
