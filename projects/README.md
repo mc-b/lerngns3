@@ -38,6 +38,30 @@ Die IP-Adresse `192.168.1.31` (Windows) `10.0.46.249` (Linux) ist durch die IP d
 
 **ACHTUNG**: auf Linux wird die Route automatisch entfernt, wenn der Router (GNS3 Projekt) nicht mehr läuft
 
+Deshalb Route in `/etc/netplan/50-cloud-init.yaml` eintragen, z.B.
+
+    network:
+        version: 2
+        ethernets:
+            ens4:
+                dhcp4: false
+                dhcp6: false
+        bridges:
+          br0:
+           dhcp4: true
+           interfaces:
+             - ens4
+           routes:
+             - to: 192.168.123.0/24
+               via: 10.0.46.249
+               metric: 100
+               
+Und aktivieren
+
+    sudo netplan generate
+    sudo netplan apply                
+
+
 Port (Range) forward
 --------------------
 
