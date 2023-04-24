@@ -32,9 +32,9 @@ Um das Routing zu vereinfachen hat der Router immer die gleiche MAC Adresse: "0c
     
 **Linux**
 
-    ip route add 192.168.123.0/24 via 192.168.1.31 dev br0
+    sudo ip route add 192.168.123.0/24 via 10.0.46.249 dev br0
 
-Die IP-Adresse `192.168.1.31` ist durch die IP des Router zu ersetzen.
+Die IP-Adresse `192.168.1.31` (Windows) `10.0.46.249` (Linux) ist durch die IP des Router zu ersetzen.
 
 Port (Range) forward
 --------------------
@@ -66,38 +66,60 @@ Einzelner Port, hier MAAS.io und OpenWrt, weiterleiten.
     
     sudo systemctl restart nginx
         
-Mehrere Ports weiterleiten, z.B. für Kubernetes        
+Mehrere Ports weiterleiten, z.B. für Kubernetes, gleichzeitig soll die IP-Adresse mittels Router aufgelöst werden:     
 
-    cat <<EOF | sudo tee /etc/nginx/sites-enabled/microk8s
-    # Kubernetes Port Mapping
+    cat <<EOF | sudo tee /etc/nginx/sites-enabled/duk
     server {
-            listen 32000-32100 default_server;
+            listen 31250-31350 default_server;
             location / {
-                    proxy_pass http://192.168.123.169:$server_port;
+                    resolver    10.0.46.249;
+                    proxy_pass  http://dukmaster-10-default:\$server_port;
             }
     }
-    # Kubernetes Dashboard
+    server {
+            listen 32000-32200 default_server;
+            location / {
+                    resolver    10.0.46.249;
+                    proxy_pass  http://dukmaster-10-default:\$server_port;
+            }
+    }
     server {
             listen 8443 default_server;
             location / {
-                    proxy_redirect      off;
-                    proxy_set_header    X-Real-IP $remote_addr;
-                    proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
-                    proxy_set_header    Host $http_host;
-                    proxy_pass https://192.168.123.169:8443/;
+                    resolver    10.0.46.249;
+                    proxy_pass  https://dukmaster-10-default:\$server_port;
             }
     }
     EOF
     
     sudo systemctl restart nginx
     
-Die IP Adresse `192.168.123.169` ist durch die IP des Kubernetes Master auszuwechseln.
+`10.0.46.249` ist die IP-Adresse des Routers und entsprechend anzupassen.
 
 In Microk8s Master wechseln und zum Testen Container starten
 
     kubectl run hello-world --image registry.gitlab.com/mc-b/misegr/hello-world --restart=Never 
     kubectl expose pod/hello-world --type="LoadBalancer" --port 80
     kubectl get all
+    
+Netzwerk Tools
+--------------
+
+Folgende Netzwerk Tools erleichtern die Fehlersuche.
+
+Ausgabe der bekannten IP-Adressen/Hostnamen
+
+    arp
+
+Nächste DHCP IP-Adresse abfragen:
+
+     sudo nmap --script broadcast-dhcp-discover
+     
+IP-Adresse für DNS-Namen ausgeben:
+
+    host dukmaster-10-default 10.0.46.249
+    
+`10.0.46.249` ist die IP-Adresse des Routers.    
 
 ### Links    
 
