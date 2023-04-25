@@ -118,6 +118,13 @@ In Microk8s Master wechseln und zum Testen Container starten
     kubectl expose pod/hello-world --type="LoadBalancer" --port 80
     kubectl get all
     
+Alternativen
+------------
+
+* [HA Proxy](http://docs.haproxy.org/)
+* [Linux Virtual Server](http://www.linuxvirtualserver.org/)
+* [Linux Virtual Server - Load Balancer im Eigenbau](https://www.linux-magazin.de/ausgaben/2018/07/load-balancer/)
+    
 Netzwerk Tools
 --------------
 
