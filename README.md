@@ -100,6 +100,36 @@ Die OpenVPN Verbindung, kann über WireGuard verwendet werden. Dazu zuerst Konfi
 
 Weil das `192.168.23.1` keine Internet Verbindungen zulässt, in den [Projekten](projects/) `Cloud` durch `NAT` Device ersetzen.
 
+Import Templates von [TBZ GNS3 Umgebung](https://gitlab.com/ch-tbz-it/Stud/allgemein/tbzcloud-gns3) 
+---------------------------------------
+
+Dazu müssen die Templates, bzw. vorbereiteten VMs, auf dem MAAS Rack Server verfügbar sein.
+
+**Rack Server einrichten**
+
+    sudo apt-get install -y apache2 libapache2-mod-php 
+   
+Anschliessend ist das Verzeichnis `/data/templates/gns3cloudinit` vom Gateway Server ins Verzeichnis `/var/www/html/gns3cloudinit` zu kopieren.
+
+**GNS3 Umgebung, z.B. m145-xx VM** 
+
+    # Funktioniert mit MAAS Rackserver
+    export SERVER_IP=$(sudo cat /var/lib/cloud/instance/datasource | cut -d: -f3 | cut -d/ -f3)
+    
+    # Images holen
+    curl -sfL http://${SERVER_IP}/gns3cloudinit/gns3config/images.tar.gz | sudo tar xzvf - -C /opt/gns3/
+    sudo chown -R gns3:gns3 /opt/gns3/images/
+    
+    # Images als Templates eintragen
+    COUNT=$(curl ${SERVER_IP}/gns3cloudinit/gns3config/gns3_controller.conf | jq -r '.templates | length')
+    
+    counter=0
+    until [ $counter -gt ${COUNT} ]
+    do
+      curl -sfL ${SERVER_IP}/gns3cloudinit/gns3config/gns3_controller.conf | jq --arg i ${counter} -r '.templates[$i|tonumber]' >/tmp/$$
+      curl -X POST "http://localhost:3080/v2/templates" -d @/tmp/$$
+      ((counter++))
+    done
    
 Troubleshooting
 ---------------
