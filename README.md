@@ -41,10 +41,42 @@ Wenn der erste Eintrag `FAIL` anzeigt ist *Nested Virtualization* zu aktivieren 
     
 Als nächstes eines der vorbereiteten [Projekte](projects/) importieren -> File -> Import portable project".    
 
-Templates in bestehende GNS3 Umgebung integrieren
+Templates in [TBZ GNS3 Umgebung](https://gitlab.com/ch-tbz-it/Stud/allgemein/tbzcloud-gns3) integrieren
 -------------------------------------------------
 
 Ab Zeile 15 (Ubuntu Image hole) des Installationsscripts [install.sh](scripts/install.sh) bis max. Zeile 52 (ohne Netzwerk) manuell ausführen.
+
+Dafür ist vorher `localhost` durch `192.168.23.1` zu ersetzen:
+
+    for repo in lerngns3 lernmaas
+    do
+        git clone https://github.com/mc-b/${repo}
+        cd ${repo}/scripts
+        for script in gns3*.sh
+        do
+            sed -i -e 's/localhost/192.168.23.1/g' ${script};
+            bash -x ${script}
+        done
+    done   
+         
+OpenWrt Image holen und weitere Templates `Ubuntu Server`, `webterm` und `chromium` anlegen.
+
+    # OpenWrt Image holen und aufbereiten
+    sudo wget -O /opt/gns3/images/QEMU/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz https://downloads.openwrt.org/releases/22.03.0/targets/x86/64/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz
+    sudo gunzip /opt/gns3/images/QEMU/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz
+    
+    # Standard Templates anlegen
+    curl -X POST "http://192.168.23.1:3080/v2/templates" -d '{"name": "Ubuntu-22", "compute_id": "local", "qemu_path": "/usr/bin/qemu-system-x86_64", "hda_disk_image": "jammy-server-cloudimg-amd64.img", "symbol": ":/symbols/affinity/circle/gray/vm.svg", "ram": 2048, "template_type": "qemu"}' 
+    curl -X POST "http://192.168.23.1:3080/v2/templates" -d '{ "category": "guest", "compute_id": "local", "console_type": "vnc", "image": "gns3/webterm", "name": "webterm", "symbol": ":/symbols/affinity/circle/gray/client.svg", "template_type": "docker" }'
+    curl -X POST "http://192.168.23.1:3080/v2/templates" -d '{ "category": "guest", "compute_id": "local", "console_type": "vnc", "image": "jess/chromium", "name": "chromium", "symbol": ":/symbols/affinity/circle/gray/client.svg", "template_type": "docker" }'
+    
+Die OpenVPN Verbindung, kann über WireGuard verwendet werden. Dazu zuerst Konfiguration von Host im Verzeichnis `/opt/cloudinitinstall/<Hostname>.ovpn` holen und `<connection>` anpassen
+
+    <connection>
+    remote <WireGuard IP-Adresse> 1194 tcp4
+    </connection>    
+
+Weil das `192.168.23.1` keine Internet Verbindungen zulässt, in den [Projekten](projects/) `Cloud` durch `NAT` Device ersetzen.
 
 Nested Virtualization
 ---------------------
