@@ -34,10 +34,32 @@ Nach der Installation sollte überprüft werden, ob die Virtualisierung aktivier
 
     sudo virt-host-validate qemu
     
-Wenn der erste Eintrag `FAIL` anzeigt ist *Nested Virtualization* zu aktivieren oder die KVM Unterstützung zu deaktivieren. Dazu die Konfigurationsdatei `/opt/gns3/.config/GNS3/2.2/gns3_server.conf` um folgenden Eintrag ergänzen:
+**Hyper-V mit Windows und Multipass**
+
+Ist Nested Virtualization (VM in VM) zu aktivieren.
+
+Dazu sind folgende Schritte, in der PowerShell als Administrator, notwendig
+* VM stoppen, z.B. mittels Hyper-V Manager oder Multipass 
+* Nested Virtualization aktivieren
+* VM starten und ggf. IP-Adresse überprüfen.
+
+Die Befehle sind wie folgt: 
+
+    multipass stop gns3-60-default
+    Set-VMProcessor -VMName gns3-60-default -ExposeVirtualizationExtensions $true
+    Get-VMNetworkAdapter -VMName gns3-60-default | Set-VMNetworkAdapter -MacAddressSpoofing On
+    multipass start gns3-60-default
+    
+**Azure, AWS Cloud**
+
+Ist entweder eine [Bare Metal Instanz](https://aws.amazon.com/de/about-aws/whats-new/2021/11/amazon-ec2-bare-metal-instances/) mit dem Cloud-init Script [cloud-init-gns3.yaml](cloud-init-gns3.yaml) zu verwenden.
+
+Oder die KVM Unterstützung zu deaktivieren. Dazu die Konfigurationsdatei `/opt/gns3/.config/GNS3/2.2/gns3_server.conf` um folgenden Eintrag ergänzen:
 
     [Qemu]
     enable_kvm = false
+    
+**Allgemein**    
     
 Als nächstes eines der vorbereiteten [Projekte](projects/) importieren -> File -> Import portable project".    
 
@@ -78,30 +100,26 @@ Die OpenVPN Verbindung, kann über WireGuard verwendet werden. Dazu zuerst Konfi
 
 Weil das `192.168.23.1` keine Internet Verbindungen zulässt, in den [Projekten](projects/) `Cloud` durch `NAT` Device ersetzen.
 
-Nested Virtualization
----------------------
-
-Einige Beispiel brauchen die Möglichkeit VMs zu erstellen. Dazu ist die Nested Virtualization (VM in VM) zu aktivieren.
-
-Bei Hyper-V sind folgende Schritte, in der PowerShell als Administrator, notwendig
-* VM stoppen, z.B. mittels Hyper-V Manager oder Multipass 
-* Nested Virtualization aktivieren
-* VM starten und ggf. IP-Adresse überprüfen.
-
-Die Befehle sind wie folgt: 
-
-    multipass stop gns3-60-default
-    Set-VMProcessor -VMName gns3-60-default -ExposeVirtualizationExtensions $true
-    multipass start gns3-60-default
-    
-Einschränkungen
+   
+Troubleshooting
 ---------------
 
-Ein Teil der Infrastrukturen (Multipass mit Hyper-V, AWS), erlaubt es nicht das der OpenWrt Router eine IP-Adresse bezieht.
+**Netzwerk**
+
+Es kann vorkommen, dass Cloud Umgebung es nicht erlauben das der OpenWrt Router eine IP-Adresse bezieht ([Spoofing](https://de.wikipedia.org/wiki/Spoofing)).
 
 Das hat zur Folge, dass hinterliegenden VMs keine Verbindung zum Internet aufbauen können.
 
 Abhilfe: NAT Gateway statt Cloud und OpenWrt Router verwenden.
+
+**Cloud-init**
+
+Wenn die VMs vor dem Router bereit sind, kann es vorkommen, dass das Cloud-init Script nicht sauber durchläuft. Dies weil die VMs keine Verbindung zum Internet aufbauen konnte.
+
+Abhilfe: Cloud-init zurücksetzen und nochmals laufen lassen
+
+    sudo cloud-init clean
+    sudo shutdown -r now
 
 Links
 -----
@@ -114,3 +132,4 @@ Links
 * [Settings profiles](https://docs.gns3.com/docs/using-gns3/advanced/settings-profiles/)
 * [GNS3 Server Doku](https://gns3-server.readthedocs.io/en/stable/index.html)
 * [TianoCore Bios](https://www.tianocore.org/)
+* [Führen Sie Hyper-V in einer virtuellen Maschine mit verschachtelter Virtualisierung aus](https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/user-guide/nested-virtualization)
