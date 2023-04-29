@@ -79,6 +79,7 @@ Dafür ist vorher `localhost` durch `192.168.23.1` zu ersetzen:
             sed -i -e 's/localhost/192.168.23.1/g' ${script};
             bash -x ${script}
         done
+        cd ../..
     done   
          
 OpenWrt Image holen und weitere Templates `Ubuntu Server`, `webterm` und `chromium` anlegen.
