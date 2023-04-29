@@ -114,23 +114,7 @@ Anschliessend ist das Verzeichnis `/data/templates/gns3cloudinit` vom Gateway Se
 
 **GNS3 Umgebung, z.B. m145-xx VM** 
 
-    # Funktioniert mit MAAS Rackserver
-    export SERVER_IP=$(sudo cat /var/lib/cloud/instance/datasource | cut -d: -f3 | cut -d/ -f3)
-    
-    # Images holen
-    curl -sfL http://${SERVER_IP}/gns3cloudinit/gns3config/images.tar.gz | sudo tar xzvf - -C /opt/gns3/
-    sudo chown -R gns3:gns3 /opt/gns3/images/
-    
-    # Images als Templates eintragen
-    COUNT=$(curl ${SERVER_IP}/gns3cloudinit/gns3config/gns3_controller.conf | jq -r '.templates | length')
-    
-    counter=0
-    until [ $counter -gt ${COUNT} ]
-    do
-      curl -sfL ${SERVER_IP}/gns3cloudinit/gns3config/gns3_controller.conf | jq --arg i ${counter} -r '.templates[$i|tonumber]' >/tmp/$$
-      curl -X POST "http://localhost:3080/v2/templates" -d @/tmp/$$
-      ((counter++))
-    done
+Siehe Script [gns3-tbz-templates.sh](scripts/gns3-tbz-templates.sh).
    
 Troubleshooting
 ---------------
