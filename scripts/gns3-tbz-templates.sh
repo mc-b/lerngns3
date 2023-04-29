@@ -10,7 +10,7 @@ RC=$(curl -w "%{http_code}" -o /dev/null -s --max-time 3 -H Metadata:true --nopr
 if [ "$RC" == "200" ]
 then
     # Images holen
-    #curl -sfL http://${SERVER_IP}/gns3cloudinit/gns3config/images.tar.gz | sudo tar xzvf - -C /opt/gns3/
+    curl -sfL http://${SERVER_IP}/gns3cloudinit/gns3config/images.tar.gz | sudo tar xzvf - -C /opt/gns3/
     sudo chown -R gns3:gns3 /opt/gns3/images/
     
     # Images als Templates eintragen
