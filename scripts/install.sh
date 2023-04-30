@@ -2,15 +2,21 @@
 #
 #   Installationsscript GNS3 Umgebung
 
+# Introseite 
+cp INTRO.md README.md
+sed -i -e 's/fqdn/ADDR/g' README.md
+bash -x /opt/lernmaas/helper/intro
+
+###
+# NGinx als Port Forwarder etc.
+sudo apt-get purge -y apache2
+sudo apt-get install -y nginx
+
 # GNS3 Labor
 cd /tmp
 curl https://raw.githubusercontent.com/GNS3/gns3-server/master/scripts/remote-install.sh > gns3-remote-install.sh
 sudo bash gns3-remote-install.sh
 sudo usermod -aG gns3 ubuntu
-
-###
-# NGinx als Port Forwarder etc.
-sudo apt-get install -y nginx
 
 # Ubuntu Cloud-Image holen und aufbereiten 
 sudo apt-get install -y genisoimage unzip
@@ -39,7 +45,7 @@ curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-te
 curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-maas.sh | bash -
 
 # TBZ Templates
-#curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-tbz-templates.sh | bash -
+curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-tbz-templates.sh | bash -
 
 # Digicomp Kurse Templates
 cd
