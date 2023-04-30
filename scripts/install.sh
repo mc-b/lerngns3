@@ -39,7 +39,7 @@ curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-te
 curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-maas.sh | bash -
 
 # TBZ Templates
-curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-tbz-templates.sh | bash -
+#curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-tbz-templates.sh | bash -
 
 # Digicomp Kurse Templates
 cd
@@ -53,6 +53,9 @@ do
     terraform apply --auto-approve
     cd ..
 done
+
+# OpenVPN - braucht br0!, darum erst am Schluss starten
+curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/openvpn.sh | bash -
 
 # Netzwerk Bridge damit das Netzwerk schneller mit GNS3 funktioniert
 sudo apt-get install -y bridge-utils net-tools
@@ -76,4 +79,6 @@ EOF
 sudo sed -i -e 's/MACAddressPolicy=persistent/MACAddressPolicy=none/g' /usr/lib/systemd/network/99-default.link
 
 sudo netplan generate
-sudo netplan apply 
+sudo netplan apply && sudo systemctl start openvpn
+
+
