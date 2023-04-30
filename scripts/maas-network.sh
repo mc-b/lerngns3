@@ -20,4 +20,3 @@ network:
 EOF
 
 sudo netplan generate
-sudo netplan apply 
