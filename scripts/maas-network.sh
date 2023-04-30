@@ -20,4 +20,4 @@ network:
 EOF
 
 sudo netplan generate
-sudo netplan apply && sudo shutdown -r now 
+sudo netplan apply 
