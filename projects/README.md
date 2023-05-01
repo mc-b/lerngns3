@@ -24,19 +24,26 @@ Beim Router ist Ethernet0 der LAN link (Netzwerk 192.168.123.0/24), Ethernet1 de
 Routing
 -------
 
-Um das Routing zu vereinfachen hat der Router immer die gleiche MAC Adresse: "0c:96:5c:0f:00:00".
+Um das Routing zu vereinfachen hat der Router immer die gleiche MAC Adresse: "0c:96:5c:0f:00:00". 
 
-**Windows (als Administrator)** - 
+**Hinweis**: die gleiche MAC Adresse ist angenehm, wenn man auf seinem lokalen PC ein paar Projekte durchspielen will. Befinden sich mehrere GNS3 Umgebungen im gleichen Netzwerk ist die MAC Adresse zu ändern.
+
+**Windows (als Administrator)**
 
     route add 192.168.123.0 mask 255.255.255.0 192.168.1.31
+    
+Die IP-Adresse `192.168.1.31` ist durch die IP des Router zu ersetzen.   
+
+Wird OpenVPN, über WireGuard, verwendet bekommt der PC eine IP-Adresse vom entfernten Netzwerk. 
+Deshalb ist beim Routing, dann die Router IP-Adresse vom entfernten Netzwerk, hier `10.0.46.249` statt `192.168.1.31`, anzugeben. 
     
 **Linux**
 
     sudo ip route add 192.168.123.0/24 via 10.0.46.249 dev br0
 
-Die IP-Adresse `192.168.1.31` (Windows) `10.0.46.249` (Linux) ist durch die IP des Router zu ersetzen.
+Die IP-Adresse `10.0.46.249` ist durch die IP des Router zu ersetzen.
 
-**ACHTUNG**: auf Linux wird die Route automatisch entfernt, wenn der Router (GNS3 Projekt) nicht mehr läuft
+Auf Linux wird die Route automatisch entfernt, wenn der Router (GNS3 Projekt) nicht mehr läuft.
 
 Deshalb Route in `/etc/netplan/50-cloud-init.yaml` eintragen, z.B.
 
@@ -59,8 +66,8 @@ Deshalb Route in `/etc/netplan/50-cloud-init.yaml` eintragen, z.B.
 Und aktivieren
 
     sudo netplan generate
-    sudo netplan apply                
-
+    sudo netplan apply  
+    
 
 Port (Range) forward
 --------------------
