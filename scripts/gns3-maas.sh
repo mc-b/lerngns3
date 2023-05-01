@@ -36,7 +36,7 @@ EOF
 curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"
 
 ###
-# Scratch Server (leere Maschine welche zuerst mittels Netzwerk installiert werden muss)
+# Scratch Server (leere Maschine welche zuerst mittels Netzwerk installiert werden muss) mit Nested virtualization
  
 sudo qemu-img create -f qcow2 /opt/gns3/images/QEMU/scratch.qcow2 32G
 
@@ -53,7 +53,8 @@ cat <<EOF >template
     "ram": 8192,
     "symbol": ":/symbols/affinity/circle/red/server.svg",
     "template_type": "qemu",
-    "usage": "Scratch Server (leere Maschine welche zuerst mittels Netzwerk installiert werden muss)"
+    "options": "--cpu host",
+    "usage": "Scratch Server (leere Maschine welche zuerst mittels Netzwerk installiert werden muss). Mit aktivierter Nested virtualization (VM in VM)"
 }
 EOF
 curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"    
