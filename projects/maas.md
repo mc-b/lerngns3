@@ -9,6 +9,21 @@ Metal as a Service Umgebung basierend auf [MAAS.io](https://maas.io).
 
 Siehe auch Projekt [LernMAAS](https://github.com/mc-b/lernmaas).
 
+**MAAS**
+
+* Anmelden in der MAAS Oberfläche [http://192.168.123.8:5240](http://192.168.123.8:5240).
+* Assistent durcharbeiten mit Default Werten.
+* DHCP Server aktivieren im Subnet 192.168.123.0/24.
+
+**Router**
+
+DHCP Server auf dem LAN Interface deaktivieren:
+
+    uci set dhcp.lan.ignore=1
+    uci commit
+    reboot
+    
+
 Port (Range) forward
 --------------------
 
