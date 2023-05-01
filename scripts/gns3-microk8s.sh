@@ -3,6 +3,9 @@
 #   Erstellt Kubernetes Templates um Cluster zu erzeugen
 #
 
+# Default: localhost
+[ "${GNS3_SERVER}" == "" ] && { export GNS3_SERVER=localhost; }
+
 ###
 #   Image holen
 
@@ -42,7 +45,7 @@ cat <<EOF >template
     "usage": "Kubernetes Master ${MODUL}"
 }
 EOF
-    curl -X POST "http://localhost:3080/v2/templates" -d "@template"     
+    curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"     
     
 done
 
@@ -70,7 +73,7 @@ cat <<EOF >template
     "usage": "Kubernetes Worker ${MODUL}"
 }
 EOF
-    curl -X POST "http://localhost:3080/v2/templates" -d "@template"     
+    curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"     
     
 done 
 

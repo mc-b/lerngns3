@@ -3,6 +3,9 @@
 #   Erstellt Customer, Order, Catalog Template um LoadBalancing zu zeigen
 #
 
+# Default: localhost
+[ "${GNS3_SERVER}" == "" ] && { export GNS3_SERVER=localhost; }
+
 ###
 #   Image holen
 
@@ -70,7 +73,7 @@ EOF
     "usage": "Webshop ${MODUL} ${INSTANCE}"
 }
 EOF
-        curl -X POST "http://localhost:3080/v2/templates" -d "@template"
+        curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"
         
     done             
 done
@@ -102,7 +105,7 @@ cat <<EOF >template
     "usage": "Webshop ${MODUL}"
 }
 EOF
-curl -X POST "http://localhost:3080/v2/templates" -d "@template"
+curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"
 
 ### 
 # Load Balancer
@@ -131,4 +134,4 @@ cat <<EOF >template
     "usage": "Webshop ${MODUL}"
 }
 EOF
-curl -X POST "http://localhost:3080/v2/templates" -d "@template"
+curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"

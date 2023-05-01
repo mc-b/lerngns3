@@ -4,6 +4,9 @@
 #   Es braucht einen MAAS Rackserver mit einem WebServer und den Images unter http://<Rack Server>/gns3cloudinit
 #
 
+# Default: localhost
+[ "${GNS3_SERVER}" == "" ] && { export GNS3_SERVER=localhost; }
+
 export SERVER_IP=$(sudo cat /var/lib/cloud/instance/datasource | cut -d: -f3 | cut -d/ -f3)
 
 RC=$(curl -w "%{http_code}" -o /dev/null -s --max-time 3 -H Metadata:true --noproxy "*" "http://${SERVER_IP}/gns3cloudinit/gns3config/gns3_controller.conf")
@@ -20,7 +23,7 @@ then
     until [ $counter -gt ${COUNT} ]
     do
       curl -sfL ${SERVER_IP}/gns3cloudinit/gns3config/gns3_controller.conf | jq --arg i ${counter} -r '.templates[$i|tonumber]' >/tmp/$$
-      curl -X POST "http://localhost:3080/v2/templates" -d @/tmp/$$
+      curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d @/tmp/$$
       ((counter++))
     done
 fi    

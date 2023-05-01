@@ -3,6 +3,9 @@
 #   Erstellt eine MAAS Umgebung
 #
 
+# Default: localhost
+[ "${GNS3_SERVER}" == "" ] && { export GNS3_SERVER=localhost; }
+
 ### 
 # MAAS Rack und Region Server
 
@@ -30,7 +33,7 @@ cat <<EOF >template
     "usage": "MAAS Rack und Region Server"
 }
 EOF
-curl -X POST "http://localhost:3080/v2/templates" -d "@template"
+curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"
 
 ###
 # Scratch Server (leere Maschine welche zuerst mittels Netzwerk installiert werden muss)
@@ -53,4 +56,4 @@ cat <<EOF >template
     "usage": "Scratch Server (leere Maschine welche zuerst mittels Netzwerk installiert werden muss)"
 }
 EOF
-curl -X POST "http://localhost:3080/v2/templates" -d "@template"    
+curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"    
