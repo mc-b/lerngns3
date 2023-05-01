@@ -45,15 +45,36 @@ cat <<EOF >template
     "boot_priority": "nc",
     "compute_id": "local",
     "console_type": "vnc",
-    "cpus": 1,
+    "cpus": 4,
     "default_name_format": "{name}-{0}",
     "hda_disk_image": "scratch.qcow2",
     "name": "maas-server",
     "qemu_path": "/usr/bin/qemu-system-x86_64",
-    "ram": 4096,
+    "ram": 8192,
     "symbol": ":/symbols/affinity/circle/red/server.svg",
     "template_type": "qemu",
     "usage": "Scratch Server (leere Maschine welche zuerst mittels Netzwerk installiert werden muss)"
 }
 EOF
 curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"    
+
+###
+# Scratch VM (leere Maschine welche zuerst mittels Netzwerk installiert werden muss)
+ 
+cat <<EOF >template
+{
+    "boot_priority": "nc",
+    "compute_id": "local",
+    "console_type": "vnc",
+    "cpus": 1,
+    "default_name_format": "{name}-{0}",
+    "hda_disk_image": "scratch.qcow2",
+    "name": "maas-vm",
+    "qemu_path": "/usr/bin/qemu-system-x86_64",
+    "ram": 2048,
+    "symbol": ":/symbols/affinity/circle/red/vm.svg",
+    "template_type": "qemu",
+    "usage": "Scratch VM (leere VM welche zuerst mittels Netzwerk installiert werden muss). Ideal um Cloud-init mit MAAS zu demonstrieren"
+}
+EOF
+curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"  
