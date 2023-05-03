@@ -6,22 +6,22 @@
 trap '' 1 3 9
 
 DEBIAN_FRONTEND=noninteractive sudo apt-get install -y isc-dhcp-server bridge-utils
-sudo brctl addbr br0
+#sudo brctl addbr br0
 
 cat <<EOF | sudo tee /etc/netplan/60-bridge-br0.yaml
 # network: {config: disabled}
 network:
-    ethernets:
+    bridges:
         br0:
             dhcp4: false
             dhcp6: false
             addresses:
             - 192.168.23.1/24
-            match:
-              driver: bridge
             mtu: 1500
     version: 2
 EOF
+sudo netplan generate
+sudo netplan apply
 
 echo "Disable iptables for bridge"
 # sysctl -w net.bridge.bridge-nf-call-iptables=0
