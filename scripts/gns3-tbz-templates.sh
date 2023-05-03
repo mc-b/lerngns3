@@ -11,17 +11,18 @@ if [ -d /home/ubuntu/templates/gns3 ]
 then
 
     for type in IOS IOU QEMU 
+    do
         for image in $(ls -1 /home/ubuntu/templates/gns3/${type})
         do
-            ln -s /home/ubuntu/templates/gns3/images/${type}/{image} /opt/gns3/images/${type}/${image}
-        do
-    do 
+            ln -s /home/ubuntu/templates/gns3/images/${type}/${image} /opt/gns3/images/${type}/${image}
+        done
+    done
     
     # Images als Templates eintragen
     COUNT=$(cat /home/ubuntu/templates/gns3/gns3_controller.conf | jq -r '.templates | length')
     
     counter=0
-    until [ $counter -lt ${COUNT} ]
+    until [ $counter -eq ${COUNT} ]
     do
       cat /home/ubuntu/templates/gns3/gns3_controller.conf | jq --arg i ${counter} -r '.templates[$i|tonumber]' >/tmp/$$
       curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d @/tmp/$$
@@ -43,7 +44,7 @@ else
         COUNT=$(curl ${SERVER_IP}/gns3cloudinit/gns3config/gns3_controller.conf | jq -r '.templates | length')
         
         counter=0
-        until [ $counter -lt ${COUNT} ]
+        until [ $counter -eq ${COUNT} ]
         do
           curl -sfL ${SERVER_IP}/gns3cloudinit/gns3config/gns3_controller.conf | jq --arg i ${counter} -r '.templates[$i|tonumber]' >/tmp/$$
           curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d @/tmp/$$
