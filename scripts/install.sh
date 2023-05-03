@@ -19,7 +19,7 @@ sudo bash gns3-remote-install.sh
 sudo usermod -aG gns3 ubuntu
 
 # Ubuntu Cloud-Image holen und aufbereiten 
-sudo apt-get install -y genisoimage unzip
+sudo apt-get install -y genisoimage unzip libguestfs-tools 
 sudo wget -q -O /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 sudo qemu-img resize /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img +30G
 # Floppy Disk Treiber raus, erzeugt X Fehlermeldungen
