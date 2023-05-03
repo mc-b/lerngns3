@@ -5,7 +5,7 @@
 
 trap '' 1 3 9
 
-DEBIAN_FRONTEND=noninteractive sudo apt-get install -y isc-dhcp-server
+DEBIAN_FRONTEND=noninteractive sudo apt-get install -y isc-dhcp-server bridge-utils
 sudo brctl addbr br0
 
 cat <<EOF | sudo tee /etc/netplan/60-bridge-br0.yaml
@@ -85,3 +85,5 @@ subnet 192.168.23.0 netmask 255.255.255.0 {
 EOFDHCP
 
 sudo sed -i 's/INTERFACESv4=""/INTERFACESv4="br0"/g' /etc/default/isc-dhcp-server
+sudo systemctl restart isc-dhcp-server
+
