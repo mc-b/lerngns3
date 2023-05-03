@@ -5,7 +5,7 @@
 
 trap '' 1 3 9
 
-sudo apt-get install -y isc-dhcp-server
+DEBIAN_FRONTEND=noninteractive sudo apt-get install -y isc-dhcp-server
 sudo brctl addbr br0
 
 cat <<EOF | sudo tee /etc/netplan/60-bridge-br0.yaml
