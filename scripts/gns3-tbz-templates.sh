@@ -12,6 +12,9 @@ then
 
     for type in IOS IOU QEMU 
     do
+        sudo mkdir -p /opt/gns3/images/${type}
+        sudo chown gns3:gns3 /opt/gns3/images/${type}
+        sudo chmod 777 /opt/gns3/images/${type}
         for image in $(ls -1 /home/ubuntu/templates/gns3/images/${type})
         do
             ln -s /home/ubuntu/templates/gns3/images/${type}/${image} /opt/gns3/images/${type}/${image}
