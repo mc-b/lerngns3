@@ -7,7 +7,7 @@
 export MY_EXTERNAL_HOSTNAME=$(ip -f inet addr show wg0 | grep -Po 'inet \K[\d.]+')
 [ "${MY_EXTERNAL_HOSTNAME}" == "" ] && { export MY_EXTERNAL_HOSTNAME=$(hostname -f); }
 
-sudo apt-get install -y openvpn openssl
+sudo apt-get install -y openvpn openssl net-tools
 
 # Stoppen fuer Konfiguration
 sudo systemctl stop openvpn
