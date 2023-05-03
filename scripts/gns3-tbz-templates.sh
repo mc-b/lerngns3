@@ -12,7 +12,7 @@ then
 
     for type in IOS IOU QEMU 
     do
-        for image in $(ls -1 /home/ubuntu/templates/gns3/${type})
+        for image in $(ls -1 /home/ubuntu/templates/gns3/images/${type})
         do
             ln -s /home/ubuntu/templates/gns3/images/${type}/${image} /opt/gns3/images/${type}/${image}
         done
