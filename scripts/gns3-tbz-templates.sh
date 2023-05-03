@@ -2,6 +2,8 @@
 #
 #   Holt in der TBZ vorbereitete Images und stellt diese als Templates ab
 #   Es braucht einen MAAS Rackserver mit einem WebServer und den Images unter http://<Rack Server>/gns3cloudinit
+#   oder 
+#   MAAS Rackserver mit NFS Freigabe von /data/templates und Images und Konfiguration im Unterverzeichnis gns3.
 #
 # Default: localhost
 [ "${GNS3_SERVER}" == "" ] && { export GNS3_SERVER=localhost; }
