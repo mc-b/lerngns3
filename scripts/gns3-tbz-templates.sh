@@ -11,7 +11,7 @@ if [ -d /home/ubuntu/templates/gns3 ]
 then
 
     for type in IOS IOU QEMU 
-        for image in (ls -1 /home/ubuntu/templates/gns3/${type}/)
+        for image in $(ls -1 /home/ubuntu/templates/gns3/${type})
         do
             ln -s /home/ubuntu/templates/gns3/images/${type}/{image} /opt/gns3/images/${type}/${image}
         do
