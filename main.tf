@@ -16,7 +16,7 @@ module "master" {
   description = "Graphical Network Simulator-3 - Netzwerk-Software-Emulator,"
   userdata    = "cloud-init-gns3.yaml"
 
-  cores   = 4
+  cores   = 2
   memory  = 16
   storage = 64
   # SSH, GNS3 Web UI
