@@ -50,6 +50,15 @@ Die Befehle sind wie folgt:
     Get-VMNetworkAdapter -VMName gns3-60-default | Set-VMNetworkAdapter -MacAddressSpoofing On
     multipass start gns3-60-default
     
+Um die VM für Hyper-V zu optimieren, sollte der Azure Kernel installiert werden.
+
+    multipass shell gns3-60-default
+    sudo apt-get -y update
+    sudo apt-get -y install linux-azure
+    sudo shutdown -r now
+    
+* [Ubuntu für Hyper-V optimieren](https://blog.daniel.wydler.eu/2020/09/20/ubuntu-20-04-lts-fuer-hyper-v-optimieren/)            
+    
 **Azure, AWS Cloud**
 
 Ist entweder eine [Bare Metal Instanz](https://aws.amazon.com/de/about-aws/whats-new/2021/11/amazon-ec2-bare-metal-instances/) mit dem Cloud-init Script [cloud-init-gns3.yaml](cloud-init-gns3.yaml) zu verwenden.
