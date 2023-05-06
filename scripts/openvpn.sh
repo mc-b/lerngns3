@@ -7,10 +7,10 @@
 export MY_EXTERNAL_HOSTNAME=$(ip -f inet addr show wg0 | grep -Po 'inet \K[\d.]+')
 [ "${MY_EXTERNAL_HOSTNAME}" == "" ] && { export MY_EXTERNAL_HOSTNAME=$(hostname -f); }
 
-sudo apt-get install -y openvpn openssl net-tools
+sudo apt-get install -y openvpn openssl bridge-utils net-tools
 
 # Stoppen fuer Konfiguration
-sudo systemctl stop openvpn
+sudo systemctl stop openvpn 
 
 echo "Create keys"
 
@@ -23,6 +23,7 @@ sudo chmod 600 /etc/openvpn/key.pem
 ###
 
 echo "Create client configuration"
+mkdir -p ~/data/.ssh/
 cat <<EOFCLIENT > ~/data/.ssh/$HOSTNAME.ovpn
 client
 nobind
