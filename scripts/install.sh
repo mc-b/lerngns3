@@ -22,11 +22,6 @@ sudo usermod -aG gns3 ubuntu
 sudo apt-get install -y genisoimage unzip libguestfs-tools 
 sudo wget -q -O /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 sudo qemu-img resize /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img +30G
-# Floppy Disk Treiber raus, erzeugt X Fehlermeldungen
-sudo virt-customize -a /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img --run-command 'echo "blacklist floppy" | sudo tee /etc/modprobe.d/blacklist-floppy.conf'
-sudo virt-customize -a /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img --run-command 'sudo dpkg-reconfigure initramfs-tools'
-# findet Hostname nicht mehr, darum deaktiviert!
-# sudo virt-customize -a /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img --install qemu-guest-agent  
 
 # OpenWrt Image holen und aufbereiten
 sudo wget -O /opt/gns3/images/QEMU/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz https://downloads.openwrt.org/releases/22.03.0/targets/x86/64/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz
