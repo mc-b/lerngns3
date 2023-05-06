@@ -25,7 +25,8 @@ sudo qemu-img resize /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img +30G
 # Floppy Disk Treiber raus, erzeugt X Fehlermeldungen
 sudo virt-customize -a /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img --run-command 'echo "blacklist floppy" | sudo tee /etc/modprobe.d/blacklist-floppy.conf'
 sudo virt-customize -a /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img --run-command 'sudo dpkg-reconfigure initramfs-tools'
-sudo virt-customize -a /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img --install qemu-guest-agent  
+# findet Hostname nicht mehr, darum deaktiviert!
+# sudo virt-customize -a /opt/gns3/images/QEMU/jammy-server-cloudimg-amd64.img --install qemu-guest-agent  
 
 # OpenWrt Image holen und aufbereiten
 sudo wget -O /opt/gns3/images/QEMU/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz https://downloads.openwrt.org/releases/22.03.0/targets/x86/64/openwrt-22.03.0-x86-64-generic-ext4-combined.img.gz
