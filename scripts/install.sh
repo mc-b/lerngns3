@@ -64,9 +64,10 @@ done
 curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/openvpn.sh | bash -
 
 # Netzwerk Bridge damit das Netzwerk schneller mit GNS3 funktioniert
-sudo apt-get install -y bridge-utils net-tools
+sudo apt-get install -y bridge-utils net-tools ethtool etherwake 
 export ETH=$(ip link | awk -F: '$0 !~ "lo|vir|wl|tap|br|wg|docker0|^[^0-9]"{print $2;getline}')
 export ETH=$(echo $ETH | sed 's/ *$//g')
+export MAC=$(sudo ethtool -P ${ETH} | cut -d' ' -f3)
 
 cat <<EOF | sudo tee /etc/netplan/50-cloud-init.yaml
 network:
@@ -80,6 +81,7 @@ network:
        dhcp4: true
        interfaces:
          - ${ETH}
+       macaddress: ${MAC}         
 EOF
 
 sudo sed -i -e 's/MACAddressPolicy=persistent/MACAddressPolicy=none/g' /usr/lib/systemd/network/99-default.link
