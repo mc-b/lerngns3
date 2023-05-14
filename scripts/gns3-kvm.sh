@@ -11,7 +11,7 @@
 
 export MODUL=host
 
-echo -e "instance-id: ${MODUL}\nlocal-hostname: ${MODUL}" > meta-data
+echo -e "instance-id: kvm-${MODUL}\nlocal-hostname: kvm-${MODUL}" > meta-data
 curl https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/cloud-init-kvm.yaml >user-data
 
 sudo mkisofs -output "/opt/gns3/images/QEMU/kvm-${MODUL}.iso" -volid cidata -joliet -rock {user-data,meta-data}
