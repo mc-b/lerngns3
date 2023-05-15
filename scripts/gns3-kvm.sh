@@ -25,7 +25,7 @@ cat <<EOF >template
     "console_type": "telnet",
     "cpus": 1,
     "ram": 2048,
-    "symbol": ":/symbols/affinity/circle/green/client.svg",    
+    "symbol": ":/symbols/affinity/circle/green/cloud.svg",    
     "hda_disk_image": "jammy-server-cloudimg-amd64.img",
     "name": "kvm-${MODUL}",
     "qemu_path": "/bin/qemu-system-x86_64",
