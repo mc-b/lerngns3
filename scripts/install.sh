@@ -44,6 +44,9 @@ curl -sfL https://raw.githubusercontent.com/mc-b/lernmaas/master/scripts/gns3-te
 # MAAS.io Template 
 curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-maas.sh | bash -
 
+# KVM und WebVirtCloud Templates 
+curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-kvm.sh | bash -
+
 # TBZ Templates
 curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-tbz-templates.sh | bash -
 

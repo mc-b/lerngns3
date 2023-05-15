@@ -31,7 +31,7 @@ cat <<EOF >template
     "qemu_path": "/bin/qemu-system-x86_64",
     "template_type": "qemu",
     "options": "--cpu host",
-    "usage": "KVM Host"
+    "usage": "WebVirtCloud Service"
 }
 EOF
 curl -X POST "http://${GNS3_SERVER}:3080/v2/templates" -d "@template"
