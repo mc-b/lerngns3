@@ -93,6 +93,13 @@ VM stoppen und entfernen
 
     virsh destroy <vm-name>
     virsh undefine <vm-name>
+    
+Manuelles erstellen einer VM, diese braucht zuerst einen eigenen Disk, basierend auf dem Ubuntu Cloud-init Image:
+
+    sudo qemu-img create -b /vmdisks/jammy-server-cloudimg-amd64.img -f qcow2 -F qcow2 /vmdisks/my-ubuntu-server-22.04.img 30G
+    virt-install --name=my-vm --ram=2048 --vcpus=1 --import --disk path=/vmdisks/my-ubuntu-server-22.04.img,format=qcow2 \
+                 --disk path=/vmdisks/cloud-init-template.iso,device=cdrom --os-variant=ubuntu22.04 --network bridge=br0,model=virtio \
+                 --graphics vnc,listen=0.0.0.0 --noautoconsole 
 
 ### Import Templates von [TBZ GNS3 Umgebung](https://gitlab.com/ch-tbz-it/Stud/allgemein/tbzcloud-gns3)   
 
