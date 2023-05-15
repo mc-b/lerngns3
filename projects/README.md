@@ -6,9 +6,14 @@ GNS3 Projekte
 * [WebShop mit Reverse Proxy](webshop-reverseproxy.md)
 * [WebShop mit LoadBalancer](webshop-loadbalancer.md)
 * [Kubernetes Cluster](microk8s-cluster.md)
+
+
 * [MAAS Metal as a Service](maas.md)
+* [WebVirtCloud - ein einfaches KVM Web GUI mit drei KVM Hosts](kvm-webvirtcloud.md)
 * [Docker und Kubernetes (DUK)](duk.md)
 * [DevOps Engineering Practices & Tools (CDI)](cdi.md)
+
+**ACHTUNG** die letzten vier Projekte brauchen 32 KB RAM, wenn alle Devices gestartet werden.
 
 Allgemeines
 -----------
