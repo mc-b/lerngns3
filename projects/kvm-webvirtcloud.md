@@ -55,11 +55,13 @@ Soll die VM im Netzwerk von Router sichtbar sind ist als Network Interface `br0`
 
 ### Weitere VMs erstellen
 
-Weitere Images können entweder mittels den normalen Installation CD-ROM der entsprechnenden Betriebsysteme erstellt werden oder mittels Cloud-init.
+Weitere Images können entweder mittels den normalen Installation CD-ROM der entsprechnenden Betriebsysteme erstellt werden,  oder mittels Cloud-init.
 
 Bei Cloud-init ist zuerst ein neuer Disk, abgeleitet von `jammy-server-cloudimg-amd64.img`, zu erstellen:
 
     sudo qemu-img create -b /vmdisks/jammy-server-cloudimg-amd64.img -f qcow2 -F qcow2 /vmdisks/ubuntu-server-22.04.img 30G
+    
+**Hinweis** dieser Vorgang kann auch WebVirtCloud übernehmen, wenn statt `Custom` - `Template` angewählt wird.    
     
 Anschliessend ein CD-ROM Image mit den Meta Informationen (`meta-data`) und dem Cloud-init Script (`user-data`).
 
@@ -76,12 +78,6 @@ Anschliessend ein CD-ROM Image mit den Meta Informationen (`meta-data`) und dem 
 
 Die Arbeiten sind auf dem jeweiligen KVM-Host durchzuführen.
 
-**Links**
-
-* [GitHub](https://github.com/retspen/webvirtcloud)
-* [Install WebVirtCloud KVM Web Dashboard on Ubuntu 20.04](https://techviewleo.com/install-webvirtcloud-kvm-web-dashboard-on-ubuntu/)
-* [Default Password Issue](https://github.com/retspen/webvirtcloud/issues/2)
-
 KVM-Hosts
 ---------
 
@@ -97,6 +93,44 @@ VM stoppen und entfernen
 
     virsh destroy <vm-name>
     virsh undefine <vm-name>
+
+### Import Templates von [TBZ GNS3 Umgebung](https://gitlab.com/ch-tbz-it/Stud/allgemein/tbzcloud-gns3)   
+
+Dazu müssen die Templates z.B. auf einem Rackserver verfügbar sein.
+
+Verzeichnis vom Rackserver mounten
+
+    sudo -i
+    mkdir -p /vmdisks/templates
+    mount -t nfs <rackserver>:/data/templates /vmdisks/templates
+    
+CD-ROM Images verlinken
+
+    for file in templates/gns3/images/QEMU/*.iso
+    do 
+        echo $file
+        b=$(basename $file)
+        ln -s $file $b
+    done
+
+
+Installierte VMs RW-Disk erzeugen
+
+    for file in templates/gns3/images/QEMU/*.img 
+    do
+        echo $file
+        b=$(basename ${file})
+        qemu-img create -b ${file} -f qcow2 -F qcow2 ${b}.img 30G
+    done
+    
+VMWare Disks müssen kopiert werden
+
+    for file in templates/gns3/images/QEMU/*.vmdk 
+    do
+        echo $file
+        cp $file .
+    done   
+    
   
 Troubleshooting
 ---------------
@@ -106,4 +140,9 @@ VM bootet nicht.
 * evtl. wurde der Download des Ubuntu-Images nicht sauber abgeschlossen. 
 * Image frisch downloaden: 
 
-    
+Links
+-----
+
+* [GitHub](https://github.com/retspen/webvirtcloud)
+* [Install WebVirtCloud KVM Web Dashboard on Ubuntu 20.04](https://techviewleo.com/install-webvirtcloud-kvm-web-dashboard-on-ubuntu/)
+* [Default Password Issue](https://github.com/retspen/webvirtcloud/issues/2)    
