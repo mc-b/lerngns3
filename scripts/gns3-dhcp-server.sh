@@ -69,6 +69,9 @@ WantedBy=multi-user.target
 
 EOFCTL
 
+sudo systemctl enable /opt/sysctl-reload.service
+sudo systemctl start /opt/sysctl-reload.service
+
 ### DHCP Server
 
 cat <<EOFDHCP | sudo tee /etc/dhcp/dhcpd.conf
