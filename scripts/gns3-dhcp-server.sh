@@ -70,7 +70,7 @@ WantedBy=multi-user.target
 EOFCTL
 
 sudo systemctl enable /opt/sysctl-reload.service
-sudo systemctl start /opt/sysctl-reload.service
+sudo systemctl start sysctl-reload.service
 
 ### DHCP Server
 
