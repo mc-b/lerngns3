@@ -55,28 +55,15 @@ Soll die VM im Netzwerk von Router sichtbar sind ist als Network Interface `br0`
 
 ### Weitere VMs erstellen
 
-Weitere Images können entweder mittels den normalen Installation CD-ROM der entsprechnenden Betriebsysteme erstellt werden,  oder mittels Cloud-init.
+Weitere Images können entweder
+* mittels der Installations CD-ROM der entsprechenden Betriebsysteme erstellt werden
+* von bestehenden Images, z.B. `jammy-server-cloudimg-amd64.img` Image abgeleitet werden.
 
-Bei Cloud-init ist zuerst ein neuer Disk, abgeleitet von `jammy-server-cloudimg-amd64.img`, zu erstellen:
+Dazu ist der Tab `Template` statt `Custom` zu verwenden.
 
-    sudo qemu-img create -b /vmdisks/jammy-server-cloudimg-amd64.img -f qcow2 -F qcow2 /vmdisks/ubuntu-server-22.04.img 30G
-    
-**Hinweis** dieser Vorgang kann auch WebVirtCloud übernehmen, wenn statt `Custom` - `Template` angewählt wird.    
-    
-Anschliessend ein CD-ROM Image mit den Meta Informationen (`meta-data`) und dem Cloud-init Script (`user-data`).
+Das `jammy-server-cloudimg-amd64.img` Image braucht noch ein Cloud-init CD-ROM, siehe unten. Ansonsten ist kein Login möglich.
 
-    echo -e "instance-id: my-server\nlocal-hostname: my-server" > meta-data
-    cat <<EOF >user-data
-    #cloud-config
-    password: insecure
-    chpasswd: { expire: False }
-    ssh_pwauth: true
-    disable_root: false
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    EOF
-    sudo genisoimage -output /vmdisks/my-cloud-init.iso -V cidata -r -J user-data meta-data     
-
-Die Arbeiten sind auf dem jeweiligen KVM-Host durchzuführen.
+Dieses kann, nach der Erstellung der VM, unter `Settings` -> `Disks` gemountet werden.
 
 KVM-Hosts
 ---------
@@ -94,13 +81,31 @@ VM stoppen und entfernen
     virsh destroy <vm-name>
     virsh undefine <vm-name>
     
-Manuelles erstellen einer VM.
+### Weitere VMs erstellen
 
-Diese braucht einen eigenen Disk, basierend auf dem Ubuntu Cloud-init Image und ein Cloud-init CD-ROM siehe [weitere VMs erstellen](#weitere-vms-erstellen)
+Weitere Images können entweder mittels den normalen Installation CD-ROM der entsprechnenden Betriebsysteme erstellt werden, oder mittels Cloud-init.
 
-    sudo qemu-img create -b /vmdisks/jammy-server-cloudimg-amd64.img -f qcow2 -F qcow2 /vmdisks/my-ubuntu-server-22.04.img 30G
+Bei Cloud-init ist zuerst ein neuer Disk, abgeleitet von `jammy-server-cloudimg-amd64.img`, zu erstellen:
+
+    sudo qemu-img create -b /vmdisks/jammy-server-cloudimg-amd64.img -f qcow2 -F qcow2 /vmdisks/ubuntu-server-22.04.img 30G
+    
+Dann ein CD-ROM Image mit den Meta Informationen (`meta-data`) und dem Cloud-init Script (`user-data`).
+
+    echo -e "instance-id: my-server\nlocal-hostname: my-server" > meta-data
+    cat <<EOF >user-data
+    #cloud-config
+    password: insecure
+    chpasswd: { expire: False }
+    ssh_pwauth: true
+    disable_root: false
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    EOF
+    sudo genisoimage -output /vmdisks/my-cloud-init.iso -V cidata -r -J user-data meta-data 
+
+Und zum Schluss kann die VM gestartet werden
+
     virt-install --name=my-vm --ram=2048 --vcpus=1 --import --disk path=/vmdisks/my-ubuntu-server-22.04.img,format=qcow2 \
-                 --disk path=/vmdisks/cloud-init-template.iso,device=cdrom --os-variant=ubuntu22.04 --network bridge=br0,model=virtio \
+                 --disk path=/vmdisks/my-cloud-init.iso,device=cdrom --os-variant=ubuntu22.04 --network bridge=br0,model=virtio \
                  --graphics vnc,listen=0.0.0.0 --noautoconsole 
 
 Statt dem Eintrag `--network bridge=br0` kann, dass automatisch erstellte KVM Network `virbr0`, umkonfiguriert werden. Dazu ist `virbr0`  zu löschen und dann als [host bridge](https://libvirt.org/formatnetwork.html#using-an-existing-host-bridge) wieder zu erstellen:
@@ -126,6 +131,78 @@ Kontrollieren mittels
     virsh net-dumpxml default
     
 Siehe auch Script [kvm.sh](https://raw.githubusercontent.com/mc-b/lerncloud/main/services/kvm.sh).
+
+### Weitere Netzwerke einrichten
+
+Manchmal kann es von Vorteil sein, nicht alle VMs im gleichen Netzwerk zu erstellen. Dazu bietet `virsh` verschiedene [Optionen](https://libvirt.org/formatnetwork.html).
+
+Ein interessante Variante ist `Routed network config`. Dabei werden die VMs in ein separates Netzwerk (Tab `Settings` -> `Network`) verschoben und sind dann mittels [Routing](README.md#routing) erreichbar.
+
+**Netzwerk ohne DHCP Server**, z.B. wenn dies von einer VM mit DHCP-Server bereitgestellt wird.
+
+    cat <<EOF >maas.xml
+    <network connections='1'>
+    <name>maas</name>
+    <domain name="maas.mc-b.ch"/>
+    <dns>
+      <forwarder addr="208.67.222.222"/>
+      <forwarder addr="208.67.220.22"/>
+    </dns>  
+      <forward mode='route'/>
+      <bridge name='virbr4' stp='on' delay='0'/>
+      <ip address='192.168.124.1' netmask='255.255.255.0'>
+      </ip>
+    </network>
+    EOF
+    
+    virsh net-define maas.xml
+    virsh net-autostart maas
+    virsh net-start maas
+    
+    # Masquerade vom internen Netz nach aussen, ansonsten kommen die VMs nicht ins Internet.
+    sudo iptables -t nat -A POSTROUTING -s 192.168.124.0/24 -j MASQUERADE
+    
+Wird eine neue VM erstellt ist als Netzwerk `maas` anzugeben.    
+    
+**Weiteres Netzwerk mit DHCP**
+    
+    cat <<EOF >example.xml
+    <network connections='1'>
+    <name>example</name>
+    <domain name="example.mc-b.ch"/>
+    <dns>
+      <forwarder addr="208.67.222.222"/>
+      <forwarder addr="208.67.220.22"/>
+    </dns>  
+      <forward mode='route'/>
+      <bridge name='virbr5' stp='on' delay='0'/>
+      <ip address='192.168.125.1' netmask='255.255.255.0'>
+        <dhcp>
+          <range start='192.168.125.20' end='192.168.125.120'/>
+        </dhcp>
+      </ip>
+    </network>
+    EOF
+    
+    virsh net-define example.xml
+    virsh net-autostart example
+    virsh net-start example    
+    
+    # Masquerade vom internen Netz nach aussen, ansonsten kommen die VMs nicht ins Internet.
+    sudo iptables -t nat -A POSTROUTING -s 192.168.125.0/24 -j MASQUERADE  
+    
+Wird eine neue VM erstellt ist als Netzwerk `example` anzugeben.    
+
+**IP-Rules Persistieren**
+
+    sudo apt-get install -y iptables-persistent
+    
+    cat <<EOF | sudo tee /etc/iptables/rules.v4
+    *nat
+    -A POSTROUTING -s 192.168.124.0/24 -j MASQUERADE
+    -A POSTROUTING -s 192.168.125.0/24 -j MASQUERADE
+    COMMIT
+    EOF 
 
 ### Import Templates von [TBZ GNS3 Umgebung](https://gitlab.com/ch-tbz-it/Stud/allgemein/tbzcloud-gns3)   
 
@@ -179,3 +256,9 @@ Links
 * [GitHub](https://github.com/retspen/webvirtcloud)
 * [Install WebVirtCloud KVM Web Dashboard on Ubuntu 20.04](https://techviewleo.com/install-webvirtcloud-kvm-web-dashboard-on-ubuntu/)
 * [Default Password Issue](https://github.com/retspen/webvirtcloud/issues/2)    
+* [Network XML format](https://libvirt.org/formatnetwork.html)
+* [How to use bridged networking with libvirt and KVM](https://linuxconfig-org.translate.goog/how-to-use-bridged-networking-with-libvirt-and-kvm?_x_tr_sl=en&_x_tr_tl=de&_x_tr_hl=de&_x_tr_pto=sc)
+* [Create and Configure Bridge Networking For KVM in Linux](https://computingforgeeks.com/how-to-create-and-configure-bridge-networking-for-kvm-in-linux/)
+* [KVM Virtual Networking Concepts](https://kb.novaordis.com/index.php/KVM_Virtual_Networking_Concepts)
+* [Creating a VM using Libvirt, Cloud Image and Cloud-Init](https://sumit-ghosh.com/posts/create-vm-using-libvirt-cloud-images-cloud-init/)
+* [iptables](https://www.linux-community.de/ausgaben/linuxuser/2013/02/iptables-grundlagen-fuer-desktop-nutzer/2/)
