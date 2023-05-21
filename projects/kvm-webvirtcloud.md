@@ -103,6 +103,30 @@ Diese braucht einen eigenen Disk, basierend auf dem Ubuntu Cloud-init Image und 
                  --disk path=/vmdisks/cloud-init-template.iso,device=cdrom --os-variant=ubuntu22.04 --network bridge=br0,model=virtio \
                  --graphics vnc,listen=0.0.0.0 --noautoconsole 
 
+Statt dem Eintrag `--network bridge=br0` kann, dass automatisch erstellte KVM Network `virbr0`, umkonfiguriert werden. Dazu ist `virbr0`  zu löschen und dann als [host bridge](https://libvirt.org/formatnetwork.html#using-an-existing-host-bridge) wieder zu erstellen:
+
+    sudo virsh net-destroy default
+    sudo virsh net-undefine default
+    cat <<EOF >/tmp/$$
+    <network>
+      <name>default</name>
+      <forward mode="bridge"/>
+      <bridge name="br0"/>
+    </network>
+    EOF
+    sudo virsh net-define /tmp/$$
+    sudo virsh net-start default
+    sudo virsh net-autostart default 
+    
+Dann verwenden die VMs, auf den KVM-Hosts, automatisch das Netzwerk vom Router, statt ein internes KVM-Host Netzwerk.
+
+Kontrollieren mittels
+
+    virsh net-list --all
+    virsh net-dumpxml default
+    
+Siehe auch Script [kvm.sh](https://raw.githubusercontent.com/mc-b/lerncloud/main/services/kvm.sh).
+
 ### Import Templates von [TBZ GNS3 Umgebung](https://gitlab.com/ch-tbz-it/Stud/allgemein/tbzcloud-gns3)   
 
 Dazu müssen die Templates z.B. auf einem Rackserver verfügbar sein.
