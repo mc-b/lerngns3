@@ -14,63 +14,47 @@ Dieses Projekt basiert auf den Erfahrungen von [LernKube](https://github.com/mc-
 Quick Start
 -----------
 
-Installiert [Git/Bash](https://git-scm.com/downloads), [Multipass](https://multipass.run/) und [Terraform](https://www.terraform.io/).
+Erstellt eine VM mit mindestens 4 CPU Cores, 8 GB RAM, 64 GB HD mit dem Cloud-init Script [cloud-init-gns3.yaml](cloud-init-gns3.yaml).
 
-Git/Bash Kommandozeile (CLI) starten und dieses Repository clonen.
+Die VM sollte ausserdem Nested Virtualization (VM in VM) unterstützen.
 
-    git clone https://github.com/mc-b/gns3
-    cd gns3
-    
-Terraform Initialisieren und VMs erstellen
-
-    terraform init
-    terraform apply
-    
-Terraform verwendet [Multipass](https://multipass.run/) um die VM zu erstellen.
-
-Nach erfolgreicher Installation werden weitere Informationen für den Zugriff auf die VMs angezeigt.
-
-Nach der Installation sollte überprüft werden, ob die Virtualisierung aktiviert ist:    
+Dieses kann wie folgt überprüft werden:
 
     sudo virt-host-validate qemu
-    
-**Hyper-V mit Windows und Multipass**
 
-Ist Nested Virtualization (VM in VM) zu aktivieren.
-
-Dazu sind folgende Schritte, in der PowerShell als Administrator, notwendig
-* VM stoppen, z.B. mittels Hyper-V Manager oder Multipass 
-* Nested Virtualization aktivieren
-* VM starten und ggf. IP-Adresse überprüfen.
-
-Die Befehle sind wie folgt: 
-
-    multipass stop gns3-60-default
-    Set-VMProcessor -VMName gns3-60-default -ExposeVirtualizationExtensions $true
-    Get-VMNetworkAdapter -VMName gns3-60-default | Set-VMNetworkAdapter -MacAddressSpoofing On
-    multipass start gns3-60-default
-    
-Um die VM für Hyper-V zu optimieren, sollte der Azure Kernel installiert werden.
-
-    multipass shell gns3-60-default
-    sudo apt-get -y update
-    sudo apt-get -y install linux-azure
-    sudo shutdown -r now
-    
-* [Ubuntu für Hyper-V optimieren](https://blog.daniel.wydler.eu/2020/09/20/ubuntu-20-04-lts-fuer-hyper-v-optimieren/)            
-    
-**Azure, AWS Cloud**
-
-Ist entweder eine [Bare Metal Instanz](https://aws.amazon.com/de/about-aws/whats-new/2021/11/amazon-ec2-bare-metal-instances/) mit dem Cloud-init Script [cloud-init-gns3.yaml](cloud-init-gns3.yaml) zu verwenden.
-
-Oder die KVM Unterstützung zu deaktivieren. Dazu die Konfigurationsdatei `/opt/gns3/.config/GNS3/2.2/gns3_server.conf` um folgenden Eintrag ergänzen:
+Falls die VM keine Nested Virtualization (VM in VM) unterstützt ist, die Konfigurationsdatei `/opt/gns3/.config/GNS3/2.2/gns3_server.conf` um folgenden Eintrag ergänzen:
 
     [Qemu]
     enable_kvm = false
+
+GNS3 Projekte
+-------------
+
+Es stehen einen Reihe von [Projekten](projects/) zur Verfügung. Dazu zuerst diese Repository, auf dem lokalen Notebook, clonen und dann via GNS3 Oberfläche eines der vorbereiteten [Projekte](projects/) importieren -> File -> Import portable project". 
+
+    git clone https://github.com/mc-b/lerngns3
     
-**Allgemein**    
-    
-Als nächstes eines der vorbereiteten [Projekte](projects/) importieren -> File -> Import portable project".    
+Die Projekte sind dann im Verzeichnis `lerngns3/projects` verfügbar.    
+
+Troubleshooting
+---------------
+
+**Netzwerk**
+
+Es kann vorkommen, dass Cloud Umgebung es nicht erlauben das der OpenWrt Router eine IP-Adresse bezieht ([Spoofing](https://de.wikipedia.org/wiki/Spoofing)).
+
+Das hat zur Folge, dass hinterliegenden VMs keine Verbindung zum Internet aufbauen können.
+
+Abhilfe: NAT Gateway statt Cloud und OpenWrt Router verwenden.
+
+**Cloud-init**
+
+Wenn die VMs vor dem Router bereit sind, kann es vorkommen, dass das Cloud-init Script nicht sauber durchläuft. Dies weil die VMs keine Verbindung zum Internet aufbauen konnte.
+
+Abhilfe: Cloud-init zurücksetzen und nochmals laufen lassen
+
+    sudo cloud-init clean
+    sudo shutdown -r now
 
 Templates in [TBZ GNS3 Umgebung](https://gitlab.com/ch-tbz-it/Stud/allgemein/tbzcloud-gns3) integrieren
 -------------------------------------------------
@@ -109,41 +93,6 @@ Die OpenVPN Verbindung, kann über WireGuard verwendet werden. Dazu zuerst Konfi
     </connection>    
 
 Weil das `192.168.23.1` keine Internet Verbindungen zulässt, in den [Projekten](projects/) `Cloud` durch `NAT` Device ersetzen.
-
-Import Templates von [TBZ GNS3 Umgebung](https://gitlab.com/ch-tbz-it/Stud/allgemein/tbzcloud-gns3) 
----------------------------------------
-
-Dazu müssen die Templates, bzw. vorbereiteten VMs, auf dem MAAS Rack Server verfügbar sein.
-
-**Rack Server einrichten**
-
-    sudo apt-get install -y apache2 libapache2-mod-php 
-   
-Anschliessend ist das Verzeichnis `/data/templates/gns3cloudinit` vom Gateway Server ins Verzeichnis `/var/www/html/gns3cloudinit` zu kopieren.
-
-**GNS3 Umgebung, z.B. m145-xx VM** 
-
-Siehe Script [gns3-tbz-templates.sh](scripts/gns3-tbz-templates.sh).
-   
-Troubleshooting
----------------
-
-**Netzwerk**
-
-Es kann vorkommen, dass Cloud Umgebung es nicht erlauben das der OpenWrt Router eine IP-Adresse bezieht ([Spoofing](https://de.wikipedia.org/wiki/Spoofing)).
-
-Das hat zur Folge, dass hinterliegenden VMs keine Verbindung zum Internet aufbauen können.
-
-Abhilfe: NAT Gateway statt Cloud und OpenWrt Router verwenden.
-
-**Cloud-init**
-
-Wenn die VMs vor dem Router bereit sind, kann es vorkommen, dass das Cloud-init Script nicht sauber durchläuft. Dies weil die VMs keine Verbindung zum Internet aufbauen konnte.
-
-Abhilfe: Cloud-init zurücksetzen und nochmals laufen lassen
-
-    sudo cloud-init clean
-    sudo shutdown -r now
 
 Links
 -----
