@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: lerngns3
+  namespace: mc-b
+  description: Digitaler Zwilling für viele Informatik Module in der Ausbildung zum
+    Informatiker EFZ und HF Lehrgang Dipl. Informatiker "cloud-native"
+  tags:
+  - container
+  - education
+  - gns3
+  - infrastructure-as-code
+  - ioe
+  - iot
+  - kubernetes
+  - cloud-native
+  links:
+  - url: https://github.com/mc-b/lerngns3
+    title: Repository
+    icon: github
+  annotations:
+    github.com/project-slug: mc-b/lerngns3
+    backstage.io/source-location: url:https://github.com/mc-b/lerngns3
+    # backstage.io/techdocs-ref: url:https://github.com/mc-b/lerngns3
+spec:
+  type: other
+  lifecycle: infrastructure
+  owner: group:mc-b/mc-b
