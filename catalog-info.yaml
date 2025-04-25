@@ -23,6 +23,6 @@ metadata:
     backstage.io/source-location: url:https://github.com/mc-b/lerngns3
     # backstage.io/techdocs-ref: url:https://github.com/mc-b/lerngns3
 spec:
-  type: other
-  lifecycle: infrastructure
+  type: infrastructure
+  lifecycle: experimental
   owner: group:mc-b/mc-b
