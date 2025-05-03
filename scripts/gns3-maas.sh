@@ -27,6 +27,7 @@ cat <<EOF >template
     "ram": 5120,
     "symbol": ":/symbols/affinity/circle/red/server_cluster.svg",    
     "hda_disk_image": "jammy-server-cloudimg-amd64.img",
+    "hda_disk_interface": "scsi",
     "name": "maas-${MODUL}",
     "qemu_path": "/bin/qemu-system-x86_64",
     "template_type": "qemu",
