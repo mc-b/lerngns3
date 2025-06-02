@@ -12,7 +12,7 @@ module "vms" {
 
   description = "GNS3/M145"
   memory      = 8
-  cores       = 4
+  cores       = 2
   storage     = 64
 
   ports = [22, 80, 3080]
