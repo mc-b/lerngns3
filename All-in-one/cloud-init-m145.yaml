@@ -16,5 +16,5 @@ disable_root: false
 runcmd:
   - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/nfsclient.sh | bash -  
   - curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/vpn.sh | bash -
-  - sudo su - ubuntu -c "curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/install.sh | bash -"
+  - sudo su - ubuntu -c "curl -sfL https://raw.githubusercontent.com/mc-b/lerncloud/main/services/repository.sh | bash -s https://github.com/tbz-it/M145"  
   
