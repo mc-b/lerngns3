@@ -18,7 +18,7 @@ then
         sudo chmod 755 /opt/gns3/images/${type}
         for image in $(ls -1 /home/ubuntu/templates/gns3/images/${type})
         do
-            sudo ln -s /home/ubuntu/templates/gns3/images/${type}/${image} /opt/gns3/images/${type}/${image}
+            sudo cp /home/ubuntu/templates/gns3/images/${type}/${image} /opt/gns3/images/${type}/${image}
         done
     done
     sudo chown -R gns3:gns3 /opt/gns3/images/
