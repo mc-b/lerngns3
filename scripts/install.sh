@@ -50,19 +50,6 @@ curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-kvm.
 # TBZ Templates
 curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/gns3-tbz-templates.sh | bash -
 
-# Digicomp Kurse Templates
-cd
-sudo snap install terraform --classic
-for MODUL in duk cdi virtar modtec mlg
-do
-    git clone https://github.com/mc-b/${MODUL}   
-    cd ${MODUL}
-    sed -i -e 's/multipass/gns3/g' main.tf
-    terraform init 
-    terraform apply --auto-approve
-    cd ..
-done
-
 # OpenVPN - braucht br0!, darum erst am Schluss starten
 curl -sfL https://raw.githubusercontent.com/mc-b/lerngns3/main/scripts/openvpn.sh | bash -
 
